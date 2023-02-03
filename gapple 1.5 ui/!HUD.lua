@@ -125,8 +125,10 @@ function onUpdate()
     runHaxeCode([[
         iconP1.x = game.iconP1.x;
         iconP1.x -= (150 * game.iconP1.scale.x - 150)/2;
+        iconP1.animation.curAnim.curFrame = game.iconP1.animation.curAnim.curFrame;
         iconP2.x = game.iconP2.x;
         iconP2.x += (150 * game.iconP2.scale.x)/2 - (26*3);
+        iconP2.animation.curAnim.curFrame = game.iconP2.animation.curAnim.curFrame;
     ]])
     if hasCredits then
         setProperty('creditsBoxTxt.x', getProperty 'creditsBox.x')
@@ -144,7 +146,7 @@ function onUpdatePost()
         ]])
     end
     local scoreSplit = stringSplit(getProperty 'scoreTxt.text', ' | ')
-    scoreSplit[3] = tostring(math.floor(getProperty 'ratingPercent' * 10000)/100)..'%'
+    scoreSplit[3] = 'Accuracy: '..tostring(math.floor(getProperty 'ratingPercent' * 10000)/100)..'%'
     setProperty('scoreTxt.text', table.concat(scoreSplit, ' | '))
     local fps = runHaxeCode 'return Main.fpsVar.currentFPS;'
     setProperty('fpsTxt.text', 'FPS: '..tostring(fps))
@@ -263,5 +265,15 @@ function onTimerCompleted(tag)
     if _timers[tag] then
         _timers[tag]()
         _timers[tag] = nil
+    end
+end
+function onEvent(n, v1, v2)
+    if n == 'Change Character' then
+        runHaxeCode([[
+            iconP1.changeIcon(game.boyfriend.healthIcon);
+            iconP1.antialiasing = game.boyfriend.antialiasing;
+            iconP2.changeIcon(game.dad.healthIcon);
+            iconP2.antialiasing = game.dad.antialiasing;
+        ]])
     end
 end
