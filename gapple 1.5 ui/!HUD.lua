@@ -206,23 +206,20 @@ function onCountdownTick(what)
     if what ~= 4 then
         cameraSetTarget(what % 2 == 0 and 'bf' or 'dad')
     end
-    local scale = 1
     local funcs = {
         [1] = function()
             setObjectCamera('countdownReady', 'game')
-            scaleObject('countdownReady', scale, scale)
             screenCenter 'countdownReady'
         end,
         [2] = function()
             setObjectCamera('countdownSet', 'game')
-            scaleObject('countdownSet', scale, scale)
             screenCenter 'countdownSet'
             setProperty('countdownSet.y', getProperty 'countdownSet.y' + 50)
             setProperty('countdownSet.x', getProperty 'countdownSet.x' - 50)
         end,
         [3] = function()
             setObjectCamera('countdownGo', 'game')
-            scale = 1.7
+            local scale = 1.7
             scaleObject('countdownGo', 0.7 * scale, 0.7 * scale)
             screenCenter 'countdownGo'
             setProperty('countdownGo.y', getProperty 'countdownGo.y' + 50)
