@@ -91,27 +91,26 @@ function onDestroy()
 end
 function onBeatHit()
     runHaxeCode([[
-		//var playbackRate:Float = 1; // delete the first "//" if your Psych Version doesn't include playback
         if (game.curBeat % game.gfSpeed == 0) {
-		var scale1:Float = 1.1;
-		var scale2:Float = 0.8;
-		var scale3:Float = 1.3;
+            var xScale:Float = 1.1;
+            var yScale1:Float = 0.8;
+            var yScale2:Float = 1.3;
 		
             var newTween = function(tag, tween){
                 game.modchartTweens.set(tag, tween);
             }
 			if(game.curBeat % (game.gfSpeed * 2) == 0) {
-				iconP1.scale.set(scale1, scale2);
-				iconP2.scale.set(scale1, scale3);
+				iconP1.scale.set(xScale, yScale1);
+				iconP2.scale.set(xScale, yScale2);
 
-				newTween('_iconp1angle', FlxTween.angle(iconP1, -15, 0, Conductor.crochet / 1300 * game.gfSpeed / playbackRate, {ease: FlxEase.quadOut}));
-				newTween('_iconp2angle', FlxTween.angle(iconP2, 15, 0, Conductor.crochet / 1300 * game.gfSpeed / playbackRate, {ease: FlxEase.quadOut}));
+				newTween('_iconp1angle', FlxTween.angle(iconP1, -15, 0, Conductor.crochet / 1300 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+				newTween('_iconp2angle', FlxTween.angle(iconP2, 15, 0, Conductor.crochet / 1300 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
 			} else {
-				iconP1.scale.set(scale1, scale3);
-				iconP2.scale.set(scale1, scale2);
+				iconP1.scale.set(xScale, yScale2);
+				iconP2.scale.set(xScale, yScale1);
 
-				newTween('_iconp2angle', FlxTween.angle(iconP2, -15, 0, Conductor.crochet / 1300 * game.gfSpeed / playbackRate, {ease: FlxEase.quadOut}));
-				newTween('_iconp1angle', FlxTween.angle(iconP1, 15, 0, Conductor.crochet / 1300 * game.gfSpeed / playbackRate, {ease: FlxEase.quadOut}));
+				newTween('_iconp2angle', FlxTween.angle(iconP2, -15, 0, Conductor.crochet / 1300 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+				newTween('_iconp1angle', FlxTween.angle(iconP1, 15, 0, Conductor.crochet / 1300 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
 			}
 			iconP1.updateHitbox();
 			iconP2.updateHitbox();
@@ -119,10 +118,10 @@ function onBeatHit()
             iconP2.offset.x -= 150 - iconP2.width + 5;
             iconP1.offset.y += (150 - iconP1.height)/2;
             iconP2.offset.y += (150 - iconP2.height)/2;
-			newTween('_iconp1scale', FlxTween.tween(iconP1.scale, {x: 1, y: 1}, Conductor.crochet / 1250 * game.gfSpeed / playbackRate, {ease: FlxEase.quadOut}));
-			newTween('_iconp2scale', FlxTween.tween(iconP2.scale, {x: 1, y: 1}, Conductor.crochet / 1250 * game.gfSpeed / playbackRate, {ease: FlxEase.quadOut}));
-            newTween('_iconp1offset', FlxTween.tween(iconP1.offset, {x: 0, y: 0}, Conductor.crochet / 1250 * game.gfSpeed / playbackRate, {ease: FlxEase.quadOut}));
-            newTween('_iconp2offset', FlxTween.tween(iconP2.offset, {x: 0, y: 0}, Conductor.crochet / 1250 * game.gfSpeed / playbackRate, {ease: FlxEase.quadOut}));
+			newTween('_iconp1scale', FlxTween.tween(iconP1.scale, {x: 1, y: 1}, Conductor.crochet / 1250 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+			newTween('_iconp2scale', FlxTween.tween(iconP2.scale, {x: 1, y: 1}, Conductor.crochet / 1250 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+            newTween('_iconp1offset', FlxTween.tween(iconP1.offset, {x: 0, y: 0}, Conductor.crochet / 1250 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+            newTween('_iconp2offset', FlxTween.tween(iconP2.offset, {x: 0, y: 0}, Conductor.crochet / 1250 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
 		}
     ]])
 end
@@ -263,7 +262,7 @@ end
 _timers = {count = 0}
 function timer(time, callback)
     local taggy = _timers.count..'_SUPER AWESOIME TIMER'
-    runTimer(taggy, time)
+    runTimer(taggy, time/playbackRate)
     _timers[taggy] = callback
     _timers.count = _timers.count + 1
 end
