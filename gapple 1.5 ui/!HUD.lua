@@ -244,9 +244,9 @@ function onCountdownTick(what)
         [4] = function()
             runHaxeCode 'game.moveCameraSection();'
             if hasCredits then
-                doTweenX('klajshdfklhasdklfjhasd', 'creditsBox', 0, 0.4, 'backOut')
+                doTweenX('klajshdfklhasdklfjhasd', 'creditsBox', 0, 0.4/playbackRate, 'backOut')
                 timer(3.25, function()
-                    doTweenX('klajshdfklhasdklfjhasd', 'creditsBox', -426, 0.4, 'backIn')
+                    doTweenX('klajshdfklhasdklfjhasd', 'creditsBox', -426, 0.4/playbackRate, 'backIn')
                     timer(0.4, function()
                         hasCredits = false
                         removeLuaSprite('creditsTxtBox', true)
