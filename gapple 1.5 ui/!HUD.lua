@@ -92,21 +92,25 @@ end
 function onBeatHit()
     runHaxeCode([[
         if (game.curBeat % game.gfSpeed == 0) {
+            var xScale:Float = 1.1;
+            var yScale1:Float = 0.8;
+            var yScale2:Float = 1.3;
+		
             var newTween = function(tag, tween){
                 game.modchartTweens.set(tag, tween);
             }
 			if(game.curBeat % (game.gfSpeed * 2) == 0) {
-				iconP1.scale.set(1.1, 0.8);
-				iconP2.scale.set(1.1, 1.3);
+				iconP1.scale.set(xScale, yScale1);
+				iconP2.scale.set(xScale, yScale2);
 
-				newTween('_iconp1angle', FlxTween.angle(iconP1, -15, 0, Conductor.crochet / 1300 * game.gfSpeed, {ease: FlxEase.quadOut}));
-				newTween('_iconp2angle', FlxTween.angle(iconP2, 15, 0, Conductor.crochet / 1300 * game.gfSpeed, {ease: FlxEase.quadOut}));
+				newTween('_iconp1angle', FlxTween.angle(iconP1, -15, 0, Conductor.crochet / 1300 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+				newTween('_iconp2angle', FlxTween.angle(iconP2, 15, 0, Conductor.crochet / 1300 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
 			} else {
-				iconP1.scale.set(1.1, 1.3);
-				iconP2.scale.set(1.1, 0.8);
+				iconP1.scale.set(xScale, yScale2);
+				iconP2.scale.set(xScale, yScale1);
 
-				newTween('_iconp2angle', FlxTween.angle(iconP2, -15, 0, Conductor.crochet / 1300 * game.gfSpeed, {ease: FlxEase.quadOut}));
-				newTween('_iconp1angle', FlxTween.angle(iconP1, 15, 0, Conductor.crochet / 1300 * game.gfSpeed, {ease: FlxEase.quadOut}));
+				newTween('_iconp2angle', FlxTween.angle(iconP2, -15, 0, Conductor.crochet / 1300 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+				newTween('_iconp1angle', FlxTween.angle(iconP1, 15, 0, Conductor.crochet / 1300 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
 			}
 			iconP1.updateHitbox();
 			iconP2.updateHitbox();
@@ -114,10 +118,10 @@ function onBeatHit()
             iconP2.offset.x -= 150 - iconP2.width + 5;
             iconP1.offset.y += (150 - iconP1.height)/2;
             iconP2.offset.y += (150 - iconP2.height)/2;
-			newTween('_iconp1scale', FlxTween.tween(iconP1.scale, {x: 1, y: 1}, Conductor.crochet / 1250 * game.gfSpeed, {ease: FlxEase.quadOut}));
-			newTween('_iconp2scale', FlxTween.tween(iconP2.scale, {x: 1, y: 1}, Conductor.crochet / 1250 * game.gfSpeed, {ease: FlxEase.quadOut}));
-            newTween('_iconp1offset', FlxTween.tween(iconP1.offset, {x: 0, y: 0}, Conductor.crochet / 1250 * game.gfSpeed, {ease: FlxEase.quadOut}));
-            newTween('_iconp2offset', FlxTween.tween(iconP2.offset, {x: 0, y: 0}, Conductor.crochet / 1250 * game.gfSpeed, {ease: FlxEase.quadOut}));
+			newTween('_iconp1scale', FlxTween.tween(iconP1.scale, {x: 1, y: 1}, Conductor.crochet / 1250 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+			newTween('_iconp2scale', FlxTween.tween(iconP2.scale, {x: 1, y: 1}, Conductor.crochet / 1250 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+            newTween('_iconp1offset', FlxTween.tween(iconP1.offset, {x: 0, y: 0}, Conductor.crochet / 1250 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
+            newTween('_iconp2offset', FlxTween.tween(iconP2.offset, {x: 0, y: 0}, Conductor.crochet / 1250 * game.gfSpeed / game.playbackRate, {ease: FlxEase.quadOut}));
 		}
     ]])
 end
@@ -189,13 +193,14 @@ function goodNoteHit(id, data, type, sus) --do wacky stuff with ratings
 end
 function onUpdateScore(miss)
     runHaxeCode([[
+		//var playbackRate:Float = 1; // delete the first "//" if your Psych Version doesn't include playback
         if(ClientPrefs.scoreZoom && !]]..tostring(miss)..[[) {
             if(game.scoreTxtTween != null) {
 				game.scoreTxtTween.cancel();
 			}
             var scale = 1.3;
 			game.scoreTxt.scale.set(scale, scale);
-			game.scoreTxtTween = FlxTween.tween(game.scoreTxt.scale, {x: 1, y: 1}, 0.4, {
+			game.scoreTxtTween = FlxTween.tween(game.scoreTxt.scale, {x: 1, y: 1}, 0.4 / playbackRate, {
 				onComplete: function(twn:FlxTween) {
 					scoreTxtTween = null;
 				},
@@ -239,9 +244,9 @@ function onCountdownTick(what)
         [4] = function()
             runHaxeCode 'game.moveCameraSection();'
             if hasCredits then
-                doTweenX('klajshdfklhasdklfjhasd', 'creditsBox', 0, 0.4, 'backOut')
+                doTweenX('klajshdfklhasdklfjhasd', 'creditsBox', 0, 0.4/playbackRate, 'backOut')
                 timer(3.25, function()
-                    doTweenX('klajshdfklhasdklfjhasd', 'creditsBox', -426, 0.4, 'backIn')
+                    doTweenX('klajshdfklhasdklfjhasd', 'creditsBox', -426, 0.4/playbackRate, 'backIn')
                     timer(0.4, function()
                         hasCredits = false
                         removeLuaSprite('creditsTxtBox', true)
@@ -257,7 +262,7 @@ end
 _timers = {count = 0}
 function timer(time, callback)
     local taggy = _timers.count..'_SUPER AWESOIME TIMER'
-    runTimer(taggy, time)
+    runTimer(taggy, time/playbackRate)
     _timers[taggy] = callback
     _timers.count = _timers.count + 1
 end
