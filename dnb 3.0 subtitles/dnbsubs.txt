@@ -1,2 +1,4 @@
-v1: sub (leave blank if loading from txt)
-v2: size, typespeed, showtime
+Creates subtitles like in Dave and Bambi 3.0
+
+Value 1: sub (leave blank if loading from txt)
+Value 2: size, typespeed, showtime (example: 0.9, 1, 5)
